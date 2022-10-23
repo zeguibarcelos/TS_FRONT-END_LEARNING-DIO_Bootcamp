@@ -1,20 +1,15 @@
-import { login } from '../services/login';
-
 import { 
     Button,
-    ChakraProvider,
-    Center
 } from '@chakra-ui/react'
+import { MouseEventHandler } from 'react';
 
-
-export const Botão = () =>{
-    return(
-        <ChakraProvider>
-            <Center paddingTop='15px'>
-        <Button onClick={login} colorScheme='purple' size='lg'>
+interface IDButton{
+    onClick: MouseEventHandler
+}
+export const Botão = ({ onClick}: IDButton) =>{
+    return(            
+        <Button borderRadius='25px' onClick={onClick} colorScheme='purple' size='lg'>
             Enviar
           </Button>
-          </Center>
-        </ChakraProvider>
     )
 }
