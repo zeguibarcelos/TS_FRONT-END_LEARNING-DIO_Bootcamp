@@ -1,13 +1,13 @@
 interface IDioBank {
     login: boolean;
-    email: string;
-    senha: string;
+    userId: string;
+    token: string;
 }
 
 const dioBank = {
     login: false,
-    email: '',
-    senha: ''
+    userId: '',
+    token: ''
 }
 
 export const getAllLocalStorage = (): string | null =>{

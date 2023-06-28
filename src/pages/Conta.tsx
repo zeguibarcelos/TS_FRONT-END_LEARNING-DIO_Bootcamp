@@ -4,6 +4,8 @@ import { useContext, useEffect, useState } from "react"
 import { api } from "../api"
 import CardInfo from "../components/CardInfo"
 import { AppContext } from "../components/AppContext"
+import { getUserContent } from "../services/contentUser"
+
 
 interface UserData {
     email: string
@@ -13,50 +15,53 @@ interface UserData {
     id: string
 }
 
+interface User {
+    userId: string,
+    name: string,
+    email: string
+  }
+
+
+
 const Conta = () =>{
+
     const [userData, setUserData] = useState<null | UserData>()
+    const [userContent, setUserContent] = useState<User>()
     const {id} = useParams()
     const navigate = useNavigate()
 
     const {isLoggedIn} = useContext(AppContext)
+    const {token} = useContext(AppContext)
+    const {userId} = useContext(AppContext)
+    
 
     const context = useContext(AppContext)
     console.log('retorno da página conta', isLoggedIn)
-    
-    
 
-    useEffect(() =>{
-        const getData = async () => {
-            const data: any | UserData = await api
-            setUserData(data)
-        }
-        getData()
-    }, []) //parar função async
+    useEffect(() => {
+        getUserContent(userId, token).then((userContent) => setUserContent(userContent));
+      }, [])
 
     const actualData = new Date()
 
     //console.log(userData?.name)
 
-    
 
-
-    if(userData && id !== userData.id){ // se userData for carregado corretamente (diferente de null) e o id inserido for diferente do userData.id definido pelo api, então será redirecionado para a página inicial
-        navigate('/')
-    }
     !isLoggedIn && navigate('/')
+
     return (
         <Center>
             <SimpleGrid columns={2} spacing={8} paddingTop='16px'>
-                {
-                    userData === null || userData === undefined
-                        ? (
-                            <Center>
-                                <Spinner size='xl' color='white' />
-                            </Center>
-                        ) :
+                {  
+                userContent === null
+                    ? (
+                        <Center>
+                            <Spinner size='xl' color='white' />
+                        </Center>
+                    ) :
                         <>
-                        <CardInfo mainContent={`Bem vindo ${userData?.name}`} content={`${actualData?.getDay()} / ${actualData?.getMonth()} / ${actualData?.getFullYear()} / ${actualData?.getHours()}:${actualData?.getMinutes()}`} />
-                        <CardInfo mainContent = 'Saldo' content = {`R$ ${userData?.balance}`}/>
+                        <CardInfo mainContent={`Bem vindo ${userContent?.name}`} content={`${actualData?.getDay()} / ${actualData?.getMonth()} / ${actualData?.getFullYear()} / ${actualData?.getHours()}:${actualData?.getMinutes()}`} />
+                        <CardInfo mainContent = 'Email Cadastrado' content = {`${userContent?.email}`}/>
                         <Button onClick={() => {
                             navigate('/')
                         }}>

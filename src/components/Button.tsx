@@ -4,12 +4,13 @@ import {
 import { MouseEventHandler } from 'react';
 
 interface IDButton{
-    onClick: MouseEventHandler
+    onClick: MouseEventHandler,
+    children: any
 }
-export const Botão = ({ onClick}: IDButton) =>{
+export const Botão = ({ onClick, children}: IDButton) =>{
     return(            
         <Button borderRadius='25px' onClick={onClick} colorScheme='purple' size='lg'>
-            Enviar
+            {children}
           </Button>
     )
 }

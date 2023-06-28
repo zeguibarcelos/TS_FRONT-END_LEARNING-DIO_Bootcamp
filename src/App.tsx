@@ -7,11 +7,8 @@ import { createLocalStorage, getAllLocalStorage } from './services/storage';
 
 
 
-function App(): any {
 
-  /*if(!getAllLocalStorage()){
-    createLocalStorage();
-  }*/
+function App(): any {
 
   !getAllLocalStorage() && createLocalStorage()
   
